@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/video.css">
+    <title>Videos</title>
+</head>
+
+<body>
+    <div class="video_player">
+        <video controls id="player">
+            Video will displayed here.
+        </video>
+    </div>
+    <div class="board">
+        <div class="sub_title">Video list
+            <button id="ok">Set</button>
+        </div>
+        <button class="sub_page">item1</button>
+    </div>
+
+</body>
+<script>
+    var player = document.getElementById("player");
+    var setButton = document.getElementById("ok");
+    setButton.onclick = setVideoSrc;
+
+    function setVideoSrc() {
+        console.log("Set video origin...")
+        player.src = "../resource/video/test.mp4";
+    }
+</script>
+
+</html>

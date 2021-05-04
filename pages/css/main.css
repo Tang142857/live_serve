@@ -12,3 +12,30 @@ h6 {
     width: fit-content;
     font-family: system-ui;
 }
+
+.board {
+    background-color: lightgreen;
+    border: 2px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 3px;
+    padding: 2px;
+    margin: 5px;
+}
+
+.sub_page {
+    background-color: green;
+    border: 1px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 3px;
+    padding: 2px;
+    margin: 3px;
+}
+
+.sub_title {
+    font-size: large;
+    background-color: white;
+    border-bottom: 2px;
+    border-bottom-style: solid;
+}
