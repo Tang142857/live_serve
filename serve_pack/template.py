@@ -19,6 +19,10 @@ class PageSwap(object):
 
 
 class MainResponse(server.BaseHTTPRequestHandler):
+    def log_request(self, code):
+        print(f"At port: {self.server.server_port} -> ", end='')
+        server.BaseHTTPRequestHandler.log_request(self, code)
+
     def do_GET(self):
         # if customers use root directory
         # lead them to index.html
@@ -33,9 +37,9 @@ class MainResponse(server.BaseHTTPRequestHandler):
 
 def response_manager(res: MainResponse):
     """Deal with all the requests."""
-    print(res.path)
+    # print(res.path)
     resource_path = res.path[1:]  # it starts with / :(
-    print(resource_path)
+    # print(resource_path)
 
     try:
         with open(resource_path, 'rb') as f:

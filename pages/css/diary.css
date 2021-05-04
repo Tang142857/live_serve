@@ -1,0 +1,26 @@
+h1 {
+    font-size: 50px;
+}
+
+div#markdown {
+    background-color: #0077ac;
+    width: auto;
+    height: 200px;
+}
+
+div#diary {
+    background-color: #ffff00;
+    width: auto;
+    height: 200px;
+}
+
+body>div {
+    margin: 10px;
+    padding: 5px;
+    border: 3px;
+    border-style: solid;
+}
+
+.items {
+    border-radius: 4px;
+}

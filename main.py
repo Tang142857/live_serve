@@ -8,10 +8,19 @@ The main serve program for live serve.
 Copyright(c): DFSA Software Develop Center
 """
 from http import server
+from threading import Thread
 
 from serve_pack import template
 
 if __name__ == '__main__':
     server_address = ('', 8080)
-    SERVER = server.HTTPServer(server_address, template.MainResponse)
-    SERVER.serve_forever()
+    server_address_2 = ('', 8082)
+
+    SERVER_1 = server.HTTPServer(server_address, template.MainResponse)
+    SERVER_2 = server.HTTPServer(server_address_2, template.MainResponse)
+    SERVE_THREAD_1 = Thread(target=SERVER_1.serve_forever)
+    SERVE_THREAD_2 = Thread(target=SERVER_2.serve_forever)
+    SERVE_THREAD_1.start()
+    SERVE_THREAD_2.start()
+    SERVE_THREAD_2.join()
+    SERVE_THREAD_1.join()

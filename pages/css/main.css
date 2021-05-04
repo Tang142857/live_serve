@@ -1,4 +1,14 @@
-h1{
-    /* background-color: #ffffff; */
-    color: #0077ac;
+/*
+Only the main and important style write here.
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0px;
+    width: fit-content;
+    font-family: system-ui;
 }
