@@ -131,3 +131,5 @@ dmypy.json
 .vscode
 /resource
 /resource/video
+# pycharm
+/.idea
