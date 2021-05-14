@@ -7,7 +7,6 @@ The serve serve model.
 @date: 2021-05-03
 Copyright(c): DFSA Software Develop Center
 """
-import re
 import sys
 from http import server
 
@@ -15,11 +14,6 @@ import processor
 
 
 class MainResponse(server.BaseHTTPRequestHandler):
-    def log_request(self, code):
-        print(f"At port: {self.server.server_port} -> ", end='')
-        server.BaseHTTPRequestHandler.log_request(self, code)
-        self.log_in_file()
-
     def log_in_file(self):
         """
         Called by log requests 
@@ -28,31 +22,26 @@ class MainResponse(server.BaseHTTPRequestHandler):
         if '--debug' in sys.argv:
             return
         else:
+            # TODO log in file
             pass
 
     def do_GET(self):
-        # if customers use root directory
-        # lead them to index.html
-
+        status = f'At port -> {self.server.server_port}'
+        print(status, end='')
         requests_manager(self)
 
 
 def requests_manager(res: MainResponse):
     """Deal with all the requests."""
-    if res.path == '/':
+    # some simple visitor guide write here
+    if res.path == '/':  # root guider
         res.send_response(301)
         res.send_header('location', '/index.html')
         res.end_headers()
         return
 
-    use_callback(res)
-
-
-def use_callback(res: MainResponse):
-    for exp in processor.URL_LIST.keys():
-        print(f'{exp=}:{res.path=}-{re.match(exp,res.path)=}')
-        if re.match(exp, res.path):
-            processor_ = processor.URL_LIST[exp]
-            break
-    # don't forget ,anyway the super manager will be the processor
-    return processor_(res)
+    # tell if it use api or just a file
+    if res.path.startswith('/api'):
+        processor.api_manager(res)
+    else:
+        processor.file_manager(res)

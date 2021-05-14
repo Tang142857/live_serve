@@ -15,16 +15,20 @@ import file_types
 # write the re expreession as key and callback function as value
 
 
-def diary(res: server.BaseHTTPRequestHandler):
-    res.send_header('provider', 'diary_serve')
+def api_manager(res: server.BaseHTTPRequestHandler):
+    """
+    When the pages' javascript cell me for data ,
+    use the api manager.
+    All this requests starts with /api/...
+    """
+    pass
 
 
-def video(res: server.BaseHTTPRequestHandler):
-    res.send_header('provider', 'video_server')
-
-
-def super_manager(res: server.BaseHTTPRequestHandler):
-    # only send the file with 200
+def file_manager(res: server.BaseHTTPRequestHandler):
+    """
+    When the browser visit the site ,just return file
+    file manager just serve basical file service.
+    """
     resource_path = res.path[1:]
 
     try:
@@ -52,12 +56,3 @@ def super_manager(res: server.BaseHTTPRequestHandler):
         }
 
         res.wfile.write(error_page.encode('utf-8'))
-
-
-################################### split here #######################################
-# have not start the sub serve
-URL_LIST = {
-    # r'^/pages/diary.html': diary,
-    # r'^/pages/videos.html': video,
-    r'.*': super_manager
-}
