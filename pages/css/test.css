@@ -1,0 +1,11 @@
+.topic {
+    border: 4px;
+    border-color: black;
+    border-style: solid;
+    border-radius: 3px;
+    padding: 2px;
+}
+
+.longtext {
+    width: 320px;
+}
