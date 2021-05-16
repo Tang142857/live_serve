@@ -8,11 +8,45 @@ The porcessor for the serve.
 Copyright(c): DFSA Software Develop Center
 """
 from http import server
+from os import error
 
+import api
 import file_types
 
-# url list is used to match the url of requests
-# write the re expreession as key and callback function as value
+
+class API(object):
+    def __init__(self):
+        attrs = dir(api)
+        for attr in attrs:
+            if not attr.startswith('_'):
+                setattr(self, attr, getattr(api, attr))
+
+    def __str__(self):
+        result = f'{super().__str__()}:\n'
+        for attribute_name in dir(self):
+            if attribute_name.startswith('_'):
+                continue
+            else:
+                result += attribute_name + ' -> ' + str(
+                    getattr(self, attribute_name)) + '\n'
+        return result
+
+    def get_api(self, path: str):
+        if path.startswith('/'):
+            path = path[1:]  # cut the first /
+        path_item = path.split('/')
+
+        father_api = self
+        try:
+            for item in path_item:
+                father_api = getattr(father_api, item)
+        except AttributeError:
+            return None
+        return father_api
+
+
+app_interface = API()
+print(app_interface)
 
 
 def api_manager(res: server.BaseHTTPRequestHandler):
@@ -21,7 +55,27 @@ def api_manager(res: server.BaseHTTPRequestHandler):
     use the api manager.
     All this requests starts with /api/...
     """
-    pass
+    api_path = res.path.replace('/api', '')
+    # you will get a path like /test_api
+    if (api := app_interface.get_api(api_path)) is None:
+        # conld not find the required api
+        error_page = server.DEFAULT_ERROR_MESSAGE % {
+            'code':
+            404,
+            'explain':
+            'Required API Not Be Found  :(',
+            'message':
+            'Required API Not Be Found ,please check your scrpit or see devement guide'
+        }
+
+        res.send_response(404)
+        res.send_header('content-type', 'text/html')
+        res.send_header('content-length', str(len(error_page.encode('utf-8'))))
+        res.end_headers()
+
+        res.wfile.write(error_page.encode('utf-8'))
+    else:
+        api(res)
 
 
 def file_manager(res: server.BaseHTTPRequestHandler):

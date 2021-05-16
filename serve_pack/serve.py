@@ -15,20 +15,17 @@ import processor
 
 
 class MainResponse(server.BaseHTTPRequestHandler):
-    def log_request(self, code='-', size='-') -> None:
-        """Complete override the log function to pretty print"""
-        status = 'At %(port)s -> %(visitor)s [%(time)s] - %(line)s - %(scode)s %(size)s/b'
+    def log_message(self, format, *args):
+        info_string = 'At %(serve_address)s -> %(visitor)s [%(time)s] - %(message)s\n'
         info_dict = {
-            'port': self.server.server_address,
+            'serve_address': self.server.server_address,
             'time': self.log_date_time_string(),
             'visitor': str(self.client_address),
-            'line': self.requestline,
-            'scode': code,
-            'size': size
+            'message': format % args
         }
-        status %= info_dict
-        print(status)
-        self.log_in_file(status)
+        info_string %= info_dict
+        sys.stderr.write(info_string)
+        self.log_in_file(info_string)
 
     def log_in_file(self, info_str: str):
         """
