@@ -19,11 +19,13 @@ h6 {
     border-style: solid;
     border-color: black;
     border-radius: 3px;
-    padding: 2px;
     margin: 5px;
+    font-family: Consolas;
+    width: auto;
+    height: auto;
 }
 
-.sub_page {
+.subPage {
     background-color: green;
     border: 1px;
     border-style: solid;
@@ -33,7 +35,11 @@ h6 {
     margin: 3px;
 }
 
-.sub_title {
+.boardContent {
+    padding: 2px;
+}
+
+.boardTitle {
     font-size: large;
     background-color: white;
     border-bottom: 2px;

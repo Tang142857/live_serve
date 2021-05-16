@@ -5,7 +5,7 @@ var button = document.getElementById("f5");
 
 // tang's default config
 mothed_input.value = "GET";
-address_input.value = "http://192.168.0.109:8080/";
+address_input.value = "/api/test_api";
 
 var getAttr = function(obj) {
     resString = "";
