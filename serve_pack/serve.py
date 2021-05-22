@@ -39,7 +39,7 @@ class MainResponse(server.BaseHTTPRequestHandler):
             default_log_path %= os.path.expanduser('~')
             try:
                 with open(default_log_path, 'a') as f:
-                    f.write(info_str + '\n')
+                    f.write(info_str)
             except Exception as ans:
                 print(f'Failed to write log file {str(ans)}')
 

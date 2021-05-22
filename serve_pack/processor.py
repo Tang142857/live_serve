@@ -8,7 +8,6 @@ The porcessor for the serve.
 Copyright(c): DFSA Software Develop Center
 """
 from http import server
-from os import error
 
 import api
 import file_types
@@ -57,6 +56,7 @@ def api_manager(res: server.BaseHTTPRequestHandler):
     """
     api_path = res.path.replace('/api', '')
     # you will get a path like /test_api
+
     if (api := app_interface.get_api(api_path)) is None:
         # conld not find the required api
         error_page = server.DEFAULT_ERROR_MESSAGE % {
