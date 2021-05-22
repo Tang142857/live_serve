@@ -1,0 +1,1 @@
+Some default page files or templates are here.

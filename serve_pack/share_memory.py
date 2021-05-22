@@ -10,9 +10,40 @@ other imports is its refer ,so we can do this
 @date: 2021-05-05
 Copyright(c): DFSA Software Develop Center
 """
+import sys
+import os
+
+
+def get_user_home():
+    return os.path.expanduser('~')
+
+
+class Logger(object):
+    def __init__(self):
+        self.log_file_path = get_user_home() + '.log/live_serve.log'
+
+    def log(self, pattern, *arg):
+        """
+        Log the status to file and consol
+        use --debug to close the function.
+        Don not use \n.
+        """
+        string = (pattern % arg) + '\n'
+        sys.stderr.write(string)
+        if '--debug' in sys.argv:
+            return
+        else:
+            with open(self.log_file_path, 'a') as f:
+                f.write(string)
+
+
+logger = Logger()
 
 
 class ShareMemory(object):
+    def __init__(self):
+        pass
+
     def __str__(self):
         """Just for pretty print."""
         result = ''
