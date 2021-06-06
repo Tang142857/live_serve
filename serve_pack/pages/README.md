@@ -1,1 +1,1 @@
-Some default page files or templates are here.
+Some defaults page files or templates are here.

@@ -1,5 +1,5 @@
 """
-The porcessor for the serve.
+The processor for the serve.
 
 @author: Tang142857
 @project: workspace
@@ -11,11 +11,16 @@ from http import server
 
 import api
 import file_types
+import share_memory
 
 
 class API(object):
+    """The api.py's public functions."""
     def __init__(self):
         attrs = dir(api)
+        attrs.remove('server')
+        # remove the server form the api list
+
         for attr in attrs:
             if not attr.startswith('_'):
                 setattr(self, attr, getattr(api, attr))
@@ -45,7 +50,7 @@ class API(object):
 
 
 app_interface = API()
-print(app_interface)
+# print(app_interface)
 
 
 def api_manager(res: server.BaseHTTPRequestHandler):
@@ -57,15 +62,15 @@ def api_manager(res: server.BaseHTTPRequestHandler):
     api_path = res.path.replace('/api', '')
     # you will get a path like /test_api
 
-    if (api := app_interface.get_api(api_path)) is None:
-        # conld not find the required api
-        error_page = server.DEFAULT_ERROR_MESSAGE % {
+    if (api_ := app_interface.get_api(api_path)) is None:
+        # could not find the required api
+        error_page = share_memory.PAGES.ERROR_PAGE % {
             'code':
             404,
             'explain':
             'Required API Not Be Found  :(',
             'message':
-            'Required API Not Be Found ,please check your scrpit or see devement guide'
+            'Required API Not Be Found ,please check your script or see development guide'
         }
 
         res.send_response(404)
@@ -75,13 +80,13 @@ def api_manager(res: server.BaseHTTPRequestHandler):
 
         res.wfile.write(error_page.encode('utf-8'))
     else:
-        api(res)
+        api_(res)
 
 
 def file_manager(res: server.BaseHTTPRequestHandler):
     """
     When the browser visit the site ,just return file
-    file manager just serve basical file service.
+    file manager just serve basic file service.
     """
     resource_path = res.path[1:]
 
@@ -98,15 +103,14 @@ def file_manager(res: server.BaseHTTPRequestHandler):
         res.wfile.write(bit_data)
 
     except FileNotFoundError as ans:
-        res.send_response(404)
-        res.send_header('content-type', 'text/html')
-        res.send_header('content-length', str(len(str(ans))))
-        res.end_headers()
-
-        error_page = server.DEFAULT_ERROR_MESSAGE % {
+        error_page = share_memory.PAGES.ERROR_PAGE % {
             'code': 404,
             'explain': str(ans),
             'message': '404 ERROR'
         }
+        res.send_response(404)
+        res.send_header('content-type', 'text/html')
+        res.send_header('content-length', str(len(str(error_page))))
+        res.end_headers()
 
         res.wfile.write(error_page.encode('utf-8'))

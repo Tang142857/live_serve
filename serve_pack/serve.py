@@ -12,38 +12,35 @@ import sys
 from http import server
 
 import processor
+import share_memory
+
+
+def log_in_file(info_str: str):
+    """
+    Called by log requests
+    write the log into file ,closed in --debug
+    """
+    share_memory.logger.log(info_str)
 
 
 class MainResponse(server.BaseHTTPRequestHandler):
-    def log_message(self, format, *args):
+    def log_message(self, format_, *args):
         info_string = 'At %(serve_address)s -> %(visitor)s [%(time)s] - %(message)s\n'
         info_dict = {
             'serve_address': self.server.server_address,
             'time': self.log_date_time_string(),
             'visitor': str(self.client_address),
-            'message': format % args
+            'message': format_ % args
         }
         info_string %= info_dict
         sys.stderr.write(info_string)
-        self.log_in_file(info_string)
+        log_in_file(info_string)
 
-    def log_in_file(self, info_str: str):
-        """
-        Called by log requests 
-        write the log into file ,closed in --debug
-        """
-        if '--debug' in sys.argv:
-            return
-        else:
-            default_log_path = '%s/.service/log/live_serve.log'
-            default_log_path %= os.path.expanduser('~')
-            try:
-                with open(default_log_path, 'a') as f:
-                    f.write(info_str)
-            except Exception as ans:
-                print(f'Failed to write log file {str(ans)}')
-
+    # all requests will send to manager
     def do_GET(self):
+        requests_manager(self)
+
+    def do_POST(self):
         requests_manager(self)
 
 
